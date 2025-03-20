@@ -1,0 +1,33 @@
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code from the repository
+      - uses: actions/checkout@v2
+      
+      # Set up Node.js 18 (or adjust the version if necessary)
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      # Install project dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Build the frontend (adjust command if needed)
+      - name: Build the frontend
+        run: npm run build
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build  # Ensure this points to the correct build directory
